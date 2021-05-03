@@ -1,0 +1,109 @@
+
+[ DB 테이블 ]
+
+< 테이블 생성 - 스/드/메 동일 >
+create table StudioCompanyInfo(
+infoId varchar2(10) primary key,
+userid varchar2(20),
+constraint fk_userid_studio foreign key (userid) REFERENCES ws_member (userid),
+com_name varchar2(60),
+content varchar2(2000),
+C_PRODUCTNAME  VARCHAR2(200),  
+C_PRODUCTPRICE  VARCHAR2(15),   
+C_ONLINEADDRESS VARCHAR2(40),   
+C_FILENAME VARCHAR2(60),   
+com_tel VARCHAR2(20),   
+C_OFFICEHOURS VARCHAR2(15),   
+C_OFFDAYS  VARCHAR2(20),   
+C_ADDRESS  VARCHAR2(100)
+);
+
+드레스 : DressCompanyInfo   // constraint : fk_userid_dress
+헤어메이크업 : HMcompanyInfo  // constraint : fk_userid_HM
+
+<시퀀스 생성 - 스/드/메 동일 (시작 1 끝 999 증가 1)>
+스튜디오 : stu_sequence
+드레스 : dre_sequence 
+헤어메이크업 : Hm_sequence
+
+
+<-- 스튜디오 더미 데이터-->
+insert into StudioCompanyInfo values(
+stu_SEQUENCE.nextval,'admin','피아스튜디오','피아스튜디오입니다.','더 시그니처 20p','300,000','http://plahouse.co.kr',
+'a1.jpg','02-111-1111','09:00-18:00','수요일','서울시 구로구 한국직업전문학교'
+);
+
+
+<-- 드레스 더미 데이터-->
+insert into DressCompanyInfo values(
+dre_sequence.nextval,'admin','보네르스포사','보네르스포사 드레스 업체입니다.','[ 리허설+본식 ] 드레스 4벌','1,000,000','http://plahouse.co.kr',
+'a1.jpg','02-111-1111','09:00-18:00','월요일','서울시 구로구 한국직업전문학교'
+);
+
+<-- 헤어메이크업 더미 데이터-->
+insert into HMcompanyInfo values(
+Hm_sequence.nextval,'admin','헤움','헤움 입니다..','[리허설+본식]신부2회(원장)','900,000','http://plahouse.co.kr',
+'a1.jpg','02-111-1111','09:00-18:00','수요일','서울시 구로구 한국직업전문학교'
+);
+
+
+< 허니문 테이블 >
+
+create table TravelcompanyInfo(
+infoId varchar2(10) primary key,
+userid varchar2(20),
+constraint fk_userid_travel foreign key (userid) REFERENCES ws_member (userid),
+com_name varchar2(60),
+content varchar2(2000),
+c_price  VARCHAR2(15),   
+c_image VARCHAR2(60), 
+c_logo VARCHAR2(60),
+com_tel VARCHAR2(20)   
+);
+
+< 시퀀스 생성 - 허니문 >
+travel_sequence (시작 1 끝 999 증가 1)
+
+<-- 더미 데이터 -->
+insert into TravelcompanyInfo values(
+travel_SEQUENCE.nextval,'admin','허니문리조트','허니문리조트입니다.','10%할인','a1.jpg','logo.jpg','02-111-1111'
+);
+
+
+< 문의게시판(신혼여행) 테이블 >
+
+create table question_board(
+bid  NUMBER(3) primary key,    
+bname             VARCHAR2(20),
+bcategory varchar2(20),
+btitle            VARCHAR2(100),  
+bcontent          VARCHAR2(2000), 
+bdate             DATE,           
+bhit              NUMBER(4),      
+bgroup            NUMBER(4),      
+bstep             NUMBER(4),      
+bindent           NUMBER(4),      
+fileName          VARCHAR2(40)
+);
+
+< 컬럼 삭제 - 4월 17일, 허니문 대신 신혼여행으로 통일 >
+alter table question_board drop column bcategory;
+< 컬럼 추가 >
+alter table question_board add userid varchar2(20);
+< 외래키 추가 >
+alter table question_board add CONSTRAINT fk_userid_question FOREIGN key(userid)
+REFERENCES ws_member(userid);
+
+
+< 시퀀스 생성 - 문의게시판 >
+qboard_sequence (시작 1 끝 999 증가 1)
+
+<-- 더미 데이터 -->
+insert into question_board values(
+qboard_sequence.nextval,'홍길동','[ 허니문 ]','허니문 리조트 문의합니다.','3박4일 일정 문의합니다.',sysdate,0,QBOARD_SEQUENCE.currval,0,0,'a1.jpg'
+);
+
+
+
+
+

@@ -1,0 +1,101 @@
+1. 회원가입
+
+==>DB생성 SQL문<==
+create table ws_member(
+userid varchar2(20) primary key,
+name varchar2(20),
+sex varchar2(5),
+nickName varchar2(40),
+pwd varchar2(30),
+mobile varchar2(20),
+email varchar2(50),
+cusEnter varchar2(30),
+chuchon varchar2(20),
+businessTy varchar2(20),
+com_name varchar2(60),
+com_tel varchar2(20),
+sdong varchar2(5),
+sign_up_date date default sysdate);
+
+
+==>포인트 컬럼 추가<==
+alter table ws_member add(point number(8));
+
+
+==>회원가입 더미데이터<==
+insert into ws_member values(
+'admin','관리자','W','관리자','1111','010-1111-1111','admin@naver.com',
+'2021-04-08',null,'company','웨딩수다','02-111-1111',
+'Y',sysdate,0);
+
+
+
+
+
+
+
+
+
+
+2. 지식인
+==>DB생성 SQL문<==
+create table ws_inquiry_board(
+bid number(4) primary key,
+bgroup number(4),
+bindent number(4),
+bhit number(4),
+bstep number(4),
+userid varchar2(20),
+btitle varchar2(80),
+bcontent varchar2(1000),
+bdate date default sysdate,
+filename varchar2(50),
+constraint fk_userid foreign key(userid) references ws_member(userid)
+);
+
+
+
+==>시퀀스 생성<==
+create sequence ws_inquiry_seq
+increment by 1
+start with 1
+minvalue 1
+maxvalue 1000
+nocycle;
+
+==>지식인 더미데이터<==
+insert into ws_inquiry_board values(
+ws_inquiry_seq.nextval, ws_inquiry_seq.currval,0,0,0,
+'admin','제목입니다.','내용입니다.',sysdate,'1.jpg'
+);
+
+
+★★★★★★★★★★★★★★답변채택 관련 컬럼이 추가되었습니다!(21.04.13)
+★★★★★★★★★★★★★★21.04.13일 이전 위의 테이블을 생성한 경우 아래 SQL문을 추가해 주시기 바랍니다.
+alter table ws_inquiry_board add replycheck number(2);
+update ws_inquiry_board set replycheck=0;
+
+
+
+
+★★★★★★★★★★★★★★4/15(목) 추가(관리자 ws_admin)
+==>DB생성 SQL문<==
+create table ws_admin(
+admin_id varchar(20) primary key,
+admin_pw varchar(30),
+admin_name varchar(20)
+);
+
+
+
+==>관리자 더미데이터<==
+insert into ws_admin values(
+'admin','1111','관리자'
+);
+
+
+
+★★★★★★★★★★★★★★4/18(일) 추가(ws_inquiry_board)
+★★★★★★★★★★★★★★새글 알림용
+alter table ws_inquiry_board add clickcheck number(2);
+update ws_inquiry_board set clickcheck=1;

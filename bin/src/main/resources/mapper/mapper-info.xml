@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.mapper.InfoMapper">
+	
+	<!-- [ 스튜디오 ] -->
+	
+	<!-- 전체 리스트 가져오기 -->
+	<select id="selectStudioListAll" resultType="com.site.dto.StudiocompanyInfoDto">
+		<![CDATA[ 
+		  	select * from (select rownum rnum,a.* from 
+		    (select * from StudioCompanyInfo order by infoId desc) a) 
+		    where rnum>=#{startrow} and rnum<=#{endrow}
+	    ]]> 
+	</select>
+	
+	<!-- 검색한 리스트 가져오기 -->
+	<select id="selectStudioListSearch" resultType="com.site.dto.StudiocompanyInfoDto">
+		<![CDATA[ 
+		  	select * from (select rownum rnum,a.* from
+			(select * from StudioCompanyInfo where com_name like '%'||#{search}||'%'
+			order by infoId desc) a)
+		    where rnum>=#{startrow} and rnum<=#{endrow}
+	    ]]>   
+	</select>
+	
+	<!-- 리스트 수 가져오기 -->
+	  <select id="StuListCount" resultType="int">
+	  	select count(*) from StudioCompanyInfo
+	  </select>
+	  <select id="StuListCountSearch" resultType="int">
+	  	<![CDATA[
+	  		select count(*) from StudioCompanyInfo where com_name like '%'||#{search}||'%'
+	  	]]> 
+	  </select>
+	  
+	  <!-- content_view -->
+	  <select id="selectStudioContent_view" resultType="com.site.dto.StudiocompanyInfoDto">
+	  	select * from StudioCompanyInfo where infoId=#{infoId}
+	  </select>
+	  
+	  
+	  <!-- 정보 글 등록 전에 업체명과 업체번호 가져오기 -->
+	  <select id="selectWriteView" resultType="com.site.dto.MemberDto">
+	  	select * from ws_member where userid=#{userid}
+	  </select>
+	  
+	  <!-- 정보 글 등록 -->
+	  <insert id="insertStudioWrite">
+	  	<![CDATA[ 
+		  	insert into StudioCompanyInfo values(
+			stu_sequence.nextval,#{userid},#{com_name},#{content},#{c_productName},
+			#{c_productPrice},#{c_onlineAddress},#{c_fileName},'111-1111',#{c_officeHours},#{c_offDays},#{c_address})
+	    ]]>
+	  </insert>
+	  
+	  <!-- 수정하기 위해 데이터 가져오기(modify_view)  -->
+	  <select id="selectStudioModifyView" resultType="com.site.dto.StudiocompanyInfoDto">
+	  	<![CDATA[
+	  		select * from StudioCompanyInfo where infoId=#{infoId}
+	  	]]>
+	  </select>
+	  
+	  <!-- 스튜디오 게시글 수정하기 -->
+	  <update id="updateStudioModify">
+	  	<![CDATA[ 
+		  	update StudioCompanyInfo set content=#{content},c_productName=#{c_productName},c_productPrice=#{c_productPrice},
+		  	c_onlineAddress=#{c_onlineAddress},c_fileName=#{c_fileName},c_officeHours=#{c_officeHours},c_offDays=#{c_offDays},c_address=#{c_address}
+			where infoId=#{infoId}
+	    ]]>
+	  </update>
+	  
+	  <!-- 스튜디오 게시글 삭제하기 -->
+	  <delete id="deleteStudioDelete">
+	  	<![CDATA[
+	  		delete StudioCompanyInfo where infoId=#{infoId}
+	  	]]>
+	  </delete>
+	  
+	<!-- [ 드레스 ] -->
+	
+	<!-- 전체 리스트 가져오기 -->
+	<select id="selectDressListAll" resultType="com.site.dto.DresscompanyInfoDto">
+		<![CDATA[ 
+		  	select * from (select rownum rnum,a.* from 
+		    (select * from DressCompanyInfo order by infoId desc) a) 
+		    where rnum>=#{startrow} and rnum<=#{endrow}
+	    ]]> 
+	</select>
+	
+	<!-- 검색한 리스트 가져오기 -->
+	<select id="selectDressListSearch" resultType="com.site.dto.DresscompanyInfoDto">
+		<![CDATA[ 
+		  	select * from (select rownum rnum,a.* from
+			(select * from DressCompanyInfo where com_name like '%'||#{search}||'%'
+			order by infoId desc) a)
+		    where rnum>=#{startrow} and rnum<=#{endrow}
+	    ]]>   
+	</select>
+	
+	<!-- 리스트 수 가져오기 -->
+	  <select id="DreListCount" resultType="int">
+	  	select count(*) from DressCompanyInfo
+	  </select>
+	  <select id="DreListCountSearch" resultType="int">
+	  	<![CDATA[
+	  		select count(*) from DressCompanyInfo where com_name like '%'||#{search}||'%'
+	  	]]> 
+	  </select>
+	  
+	  
+	  <!-- Content_view -->
+	  <select id="selectDressContent_view" resultType="com.site.dto.DresscompanyInfoDto">
+	  	select * from DresscompanyInfo where infoId=#{infoId}
+	  </select>
+	  
+	   <!-- 정보 글 등록 -->
+	  <insert id="insertDressWrite">
+	  	<![CDATA[ 
+		  	insert into DresscompanyInfo values(
+			dre_sequence.nextval,#{userid},#{com_name},#{content},#{c_productName},
+			#{c_productPrice},#{c_onlineAddress},#{c_fileName},'111-1111',#{c_officeHours},#{c_offDays},#{c_address})
+	    ]]>
+	  </insert>
+	  
+	  <!-- 수정하기 위해 데이터 가져오기(modify_view)  -->
+	  <select id="selectDressModifyView" resultType="com.site.dto.DresscompanyInfoDto">
+	  	<![CDATA[
+	  		select * from DresscompanyInfo where infoId=#{infoId}
+	  	]]>
+	  </select>
+	  
+	  <!-- 드레스 게시글 수정하기 -->
+	  <update id="updateDressModify">
+	  	<![CDATA[ 
+		  	update DresscompanyInfo set content=#{content},c_productName=#{c_productName},c_productPrice=#{c_productPrice},
+		  	c_onlineAddress=#{c_onlineAddress},c_fileName=#{c_fileName},c_officeHours=#{c_officeHours},c_offDays=#{c_offDays},c_address=#{c_address} 
+			where infoId=#{infoId}
+	    ]]>
+	  </update>
+	   <!-- 드레스 게시글 삭제하기 -->
+	  <delete id="deleteDressDelete">
+	  	<![CDATA[
+	  		delete DresscompanyInfo where infoId=#{infoId}
+	  	]]>
+	  </delete>
+	  
+	  <!-- [ 헤어메이크업 ] -->
+	  
+	  <!-- 전체 리스트 가져오기 -->
+	<select id="selectHmListAll" resultType="com.site.dto.HMcompanyInfoDto">
+		<![CDATA[ 
+		  	select * from (select rownum rnum,a.* from 
+		    (select * from HMcompanyInfo order by infoId desc) a) 
+		    where rnum>=#{startrow} and rnum<=#{endrow}
+	    ]]> 
+	</select>
+	
+	<!-- 검색한 리스트 가져오기 -->
+	<select id="selectHmListSearch" resultType="com.site.dto.HMcompanyInfoDto">
+		<![CDATA[ 
+		  	select * from (select rownum rnum,a.* from
+			(select * from HMcompanyInfo where com_name like '%'||#{search}||'%'
+			order by infoId desc) a)
+		    where rnum>=#{startrow} and rnum<=#{endrow}
+	    ]]>   
+	</select>
+	
+	<!-- 리스트 수 가져오기 -->
+	  <select id="HmListCount" resultType="int">
+	  	select count(*) from HMcompanyInfo
+	  </select>
+	  <select id="HmListCountSearch" resultType="int">
+	  	<![CDATA[
+	  		select count(*) from HMcompanyInfo where com_name like '%'||#{search}||'%'
+	  	]]> 
+	  </select>
+	  
+	  <!-- Content_view -->
+	  <select id="selectHmContent_view" resultType="com.site.dto.HMcompanyInfoDto">
+	  	select * from HMcompanyInfo where infoId=#{infoId}
+	  </select>
+	  
+	  <!-- 정보 글 등록 -->
+	  <insert id="insertHmWrite">
+	  	<![CDATA[ 
+		  	insert into HMcompanyInfo values(
+			Hm_sequence.nextval,#{userid},#{com_name},#{content},#{c_productName},
+			#{c_productPrice},#{c_onlineAddress},#{c_fileName},#{com_tel},#{c_officeHours},#{c_offDays},#{c_address})
+	    ]]>
+	  </insert>
+	  
+	  <!-- 수정하기 위해 데이터 가져오기(modify_view)  -->
+	  <select id="selectHmModifyView" resultType="com.site.dto.HMcompanyInfoDto">
+	  	<![CDATA[
+	  		select * from HMcompanyInfo where infoId=#{infoId}
+	  	]]>
+	  </select>
+	  
+	  <!-- 헤어메이크업 게시글 수정하기 -->
+	  <update id="updateHmModify">
+	  	<![CDATA[ 
+		  	update HMcompanyInfo set content=#{content},c_productName=#{c_productName},c_productPrice=#{c_productPrice},
+		  	c_onlineAddress=#{c_onlineAddress},c_fileName=#{c_fileName},c_officeHours=#{c_officeHours},c_offDays=#{c_offDays},c_address=#{c_address} 
+			where infoId=#{infoId}
+	    ]]>
+	  </update>
+	  
+	   <!-- 헤어메이크업 게시글 삭제하기 -->
+	  <delete id="deleteHmDelete">
+	  	<![CDATA[
+	  		delete HMcompanyInfo where infoId=#{infoId}
+	  	]]>
+	  </delete>
+	  
+	  
+	  <!-- [ 신혼여행 ] -->
+	  
+	 <!-- 전체 리스트 가져오기 -->
+		<select id="selectTravelListAll" resultType="com.site.dto.TravelcompanyInfoDto">
+			<![CDATA[ 
+			  	select * from (select rownum rnum,a.* from 
+			    (select * from TravelcompanyInfo order by infoId desc) a) 
+			    where rnum>=#{startrow} and rnum<=#{endrow}
+		    ]]> 
+		</select>
+	
+	
+	<!-- 리스트 수 가져오기 -->
+	  <select id="TravelListCount" resultType="int">
+	  	select count(*) from TravelcompanyInfo
+	  </select>
+	  
+	  
+	<!-- 정보 글 등록 -->
+	  <insert id="insertTravelWrite">
+	  	<![CDATA[ 
+		  	insert into TravelcompanyInfo values(
+			travel_sequence.nextval,#{userid},#{com_name},#{content},#{c_price},
+			#{c_image},#{c_logo},#{com_tel})
+	    ]]>
+	  </insert>
+	  
+	  <!-- 수정하기 위해 데이터 가져오기(modify_view)  -->
+	  	<select id="selectTravelModifyView" resultType="com.site.dto.TravelcompanyInfoDto">
+		  	<![CDATA[
+		  		select * from TravelcompanyInfo where infoId=#{infoId}
+		  	]]>
+	  	</select>
+	  	
+	  	<!-- 신혼여행 게시글 수정하기 -->
+	  	<update id="updateTravelModify">
+		  	<![CDATA[ 
+			  	update TravelcompanyInfo set content=#{content},c_price=#{c_price},c_image=#{c_image},
+			  	c_logo=#{c_logo} where infoId=#{infoId}
+		    ]]>
+	  	</update>
+	  	
+	  	 <!-- 허니문 게시글 삭제하기 -->
+		  <delete id="deleteTravelDelete">
+		  	<![CDATA[
+		  		delete TravelcompanyInfo where infoId=#{infoId}
+		  	]]>
+		  </delete>
+	  
+	  
+	  <!-- [ 신혼여행 문의 게시판 ] -->
+	  
+	   <!-- 전체 리스트 가져오기 -->
+		<select id="selectQuestionListAll" resultType="com.site.dto.questionBoardDto">
+			<![CDATA[ 
+			  	select * from (select rownum rnum,a.* from
+				(select * from question_board order by bgroup desc, bstep asc) a)
+				where rnum>=#{startrow} and rnum<=#{endrow}
+		    ]]> 
+		</select>
+	
+		<!-- 검색한 리스트 가져오기 -->
+		<select id="selectQuestionListSearch" resultType="com.site.dto.questionBoardDto">
+			<![CDATA[ 
+			  	select * from
+				(select rownum rnum,a.* from
+				(select * from question_board where bname like '%'||#{search}||'%' or btitle like '%'||#{search}||'%'
+				order by bgroup desc,bstep asc) a)
+				where rnum>=#{startrow} and rnum<=#{endrow}
+		    ]]>   
+		</select>
+	
+	
+		<!-- 리스트 수 가져오기 -->
+		  <select id="QuestionListCount" resultType="int">
+		  	select count(*) from question_board
+		  </select>
+		  
+		  <select id="QuestionListCountSearch" resultType="int">
+		  	<![CDATA[
+	  			select count(*) from question_board where bname like '%'||#{search}||'%' or btitle like '%'||#{search}||'%' 
+	  		]]> 
+		  </select>
+		  
+		  <!-- 조회수 증가 -->
+		  <update id="updateQuestionUpHit">
+		  	update question_board set bhit=bhit+1 where bid=#{bid}
+		  </update>
+		  
+		   <!-- Content_view -->
+		  <select id="selectQuestionContentView" resultType="com.site.dto.questionBoardDto">
+		  	select * from question_board where bid=#{bid}
+		  </select>
+		  
+		  <!-- 이전글 -->
+		  <select id="selectQuestionPreView" resultType="com.site.dto.questionBoardDto">
+		  	<![CDATA[
+		  		select * from (select rownum rnum, a.* from
+				(select * from question_board order by bgroup desc, bstep asc) a)
+				where rnum=
+				(select rnum from (select rownum rnum, a.* from
+				(select * from question_board order by bgroup desc, bstep asc) a)
+				where bid=#{bid})+1
+		  	]]>
+		  </select>
+		  
+		  <!-- 다음글 -->
+		  <select id="selectQuestionNextView" resultType="com.site.dto.questionBoardDto">
+		  	<![CDATA[
+		  		select * from (select rownum rnum, a.* from
+				(select * from question_board order by bgroup desc, bstep asc) a)
+				where rnum=
+				(select rnum from (select rownum rnum, a.* from
+				(select * from question_board order by bgroup desc, bstep asc) a)
+				where bid=#{bid})-1
+		  	]]>
+		  </select>
+		  
+		  <!-- 이전글(검색 있는 경우) -->
+		  <select id="selectQuestionPreViewSearch" resultType="com.site.dto.questionBoardDto">
+		  	<![CDATA[
+		  		select * from (select rownum rnum, a.* from
+				(select * from question_board where bname like '%'||#{search}||'%' or btitle like '%'||#{search}||'%' order by bgroup desc, bstep asc) a)
+				where rnum=
+				(select rnum from (select rownum rnum, a.* from
+				(select * from question_board where bname like '%'||#{search}||'%' or btitle like '%'||#{search}||'%' order by bgroup desc, bstep asc) a)
+				where bid=#{bid})+1
+		  	]]>
+		  </select>
+		  
+		  <!-- 다음글(검색 있는 경우) -->
+		  <select id="selectQuestionNextViewSearch" resultType="com.site.dto.questionBoardDto">
+		  	<![CDATA[
+		  		select * from (select rownum rnum, a.* from
+				(select * from question_board where bname like '%'||#{search}||'%' or btitle like '%'||#{search}||'%' order by bgroup desc, bstep asc) a)
+				where rnum=
+				(select rnum from (select rownum rnum, a.* from
+				(select * from question_board where bname like '%'||#{search}||'%' or btitle like '%'||#{search}||'%' order by bgroup desc, bstep asc) a)
+				where bid=#{bid})-1
+		  	]]>
+		  </select>
+		  
+		  
+		  
+		  <!-- 문의글 등록(insert) -->
+		  <insert id="insertQuestionWrite">
+		  	<![CDATA[ 
+			  	insert into question_board values(
+				qboard_sequence.nextval,#{bname},#{btitle},#{bcontent},
+				sysdate,0,qboard_sequence.currval,0,0,#{fileName},#{userid},#{check_userid})
+	    	]]>
+		  </insert>
+		 
+		  
+		  <!-- 수정하기 위해 데이터 가져오기(modify_view)  -->
+		  	<select id="selectQuestionModifyView" resultType="com.site.dto.questionBoardDto">
+			  	<![CDATA[
+			  		select * from question_board where bid=#{bid}
+			  	]]>
+		  	</select>
+		  <!-- 신혼여행 문의게시판 수정하기 -->
+	  	<update id="updateQuestionModify">
+		  	<![CDATA[ 
+			  	update question_board set btitle=#{btitle},bcontent=#{bcontent},
+			  	fileName=#{fileName} where bid=#{bid}
+		    ]]>
+	  	</update>
+		 
+		  <!-- 문의게시판 게시글 삭제하기 -->
+		  <delete id="deleteQuestionDelete">
+		  	<![CDATA[
+		  		delete question_board where bid=#{bid}
+		  	]]>
+		  </delete>
+		  
+		  <!-- 문의게시판 답글 등록(insert) -->
+		  <insert id="insertQuestionReply">
+		  	<![CDATA[ 
+			  	insert into question_board values(
+				qboard_sequence.nextval,#{bname},#{btitle},#{bcontent},
+				sysdate,0,#{bgroup},#{bstep}+1,#{bindent}+1,'',#{userid},#{check_userid})
+	    	]]>
+		  </insert>
+	  
+	  
+	  
+	
+</mapper>
